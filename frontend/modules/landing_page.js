@@ -33,6 +33,7 @@ function addCityToDOM(id, city, description, image) {
   outerDiv.setAttribute("class", "col-6 col-lg-3 align-items-center mb-4");
   let imgLink = document.createElement("a");
   imgLink.setAttribute("href",`pages/adventures/?city=${id}`);
+  imgLink.setAttribute("id",id);
   let tileDiv = document.createElement("div");
   tileDiv.setAttribute("class", "tile");
 
@@ -42,16 +43,21 @@ function addCityToDOM(id, city, description, image) {
   let imgCity = document.createElement("img");
   imgCity.setAttribute("src",image);
   imgCity.setAttribute("class", "card-img")
-  imgCity.setAttribute("id", id);
   let cityName = document.createElement("h5");
+  //cityName.setAttribute("class", "tile-text");
   cityName.innerText=city;
-  cityName.setAttribute("class", "tile-text");
-  cityName.setAttribute("style", "bottom: 7%;")
+  
+  //cityName.setAttribute("style", "bottom: 7%;")
   let descriptionElement = document.createElement("p");
+  //descriptionElement.setAttribute("class", "tile-text");
   descriptionElement.innerText=description;
-  descriptionElement.setAttribute("class", "tile-text");
-  descriptionElement.setAttribute("style", "top: 93%");
-  cardDiv.append(imgCity, cityName, descriptionElement);
+
+  let textDiv = document.createElement("div");
+  textDiv.setAttribute("class","tile-text");
+  textDiv.append(cityName, descriptionElement);
+  
+  //descriptionElement.setAttribute("style", "top: 93%");
+  cardDiv.append(imgCity, textDiv);
   tileDiv.appendChild(cardDiv);
   imgLink.appendChild(tileDiv);
   outerDiv.appendChild(imgLink);

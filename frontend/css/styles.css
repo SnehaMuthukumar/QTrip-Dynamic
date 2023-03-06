@@ -72,12 +72,24 @@ footer {
 }
 
 .tile-text {
-  position: absolute;
+ /*  position: absolute;
   z-index: 1;
   text-transform: uppercase;
   letter-spacing: 2px;
   text-align: center;
+  width: 100%; */
+
+
   width: 100%;
+  position: absolute;
+  z-index: 1;
+  text-transform: uppercase; 
+  letter-spacing: 2px;
+  color: #ffffff;
+  bottom: 0;
+  text-align: center; 
+  left: 50%; 
+  transform: translate(-50%);
 }
 .hero-image {
   /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
@@ -204,6 +216,9 @@ footer {
   font-weight: bolder;
 }
 
+.sampleStyle{
+  position: relative;
+}
 .reserve-button {
   width: 100%;
   border: none;
@@ -264,4 +279,16 @@ input[type="number"] {
   border-radius: 4px;
   padding: 16px;
   margin-bottom: 30px;
+}
+
+/* to make the content in the adventures card body to align right on desktop view */
+@media only screen and (min-width: 992px) {
+  #textToRight{
+    text-align: right;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .textToCenter{
+    text-align: center;
+  }
 }

@@ -76,6 +76,13 @@
                             Clear
                         </div>
                     </div>
+
+                    <!-- Optional TODO -->
+                    <div class="filter-bar-tile d-flex align-items-center">
+                        <div class="ms-3" style="color: #0645ad; cursor: pointer" onclick="addNewAdventure()">
+                            Add New Adventure
+                        </div>
+                    </div>
                 </div>
                 <!-- Section to display all selected categories  -->
                 <div class="mt-2" id="category-section">
@@ -106,7 +113,8 @@
             filterFunction,
             saveFiltersToLocalStorage,
             getFiltersFromLocalStorage,
-            generateFilterPillsAndUpdateDOM
+            generateFilterPillsAndUpdateDOM, 
+            addNewAdventure
         } from "../../modules/adventures_page.js";
 
         // Declaring global variable adventure
@@ -202,6 +210,8 @@
         window.selectCategory = selectCategory;
         window.clearDuration = clearDuration;
         window.clearCategory = clearCategory;
+        
+        window.addNewAdventure = addNewAdventure;
     </script>
 </body>
 
