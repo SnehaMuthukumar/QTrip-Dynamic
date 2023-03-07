@@ -25,6 +25,7 @@ async function fetchAdventures(city) {
 function addAdventureToDOM(adventures) {
   // TODO: MODULE_ADVENTURES
   // 1. Populate the Adventure Cards and insert those details into the DOM
+  if(adventures.length!==0){
   adventures.forEach((adventure) => {
     let colDiv = document.createElement("div");
     colDiv.setAttribute("class", "col-6 col-lg-3 mb-4 sampleStyle");
@@ -59,11 +60,10 @@ function addAdventureToDOM(adventures) {
     cardLink.appendChild(cardDiv);
     colDiv.append(cardLink, bannerDiv);
     let dataDiv = document.getElementById("data");
-    //dataDiv1.append(price);
     dataDiv.appendChild(colDiv);
-    //dataDiv.appendChild(img);
     console.log(dataDiv);
   })
+}
   
 
 }
@@ -92,14 +92,30 @@ function addAdventureToDOM(adventures) {
 function filterByDuration(list, low, high) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on Duration and return filtered list
-
+  let adventures = [];
+  
+  list.forEach(adventure => {
+    if(adventure.duration>=parseInt(low) && adventure.duration<=parseInt(high)){
+      adventures.push(adventure);
+    }
+  });
+  return adventures;
 }
 
 //Implementation of filtering by category which takes in a list of adventures, list of categories to be filtered upon and returns a filtered list of adventures.
 function filterByCategory(list, categoryList) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on their Category and return filtered list
-
+  let adventures=[];
+  categoryList.forEach((category) => {
+    list.forEach((adventure) => {
+      if(adventure.category === category){
+        adventures.push(adventure);
+      }
+    })
+  })
+  console.log(adventures)
+  return adventures;
 }
 
 // filters object looks like this filters = { duration: "", category: [] };
@@ -113,17 +129,32 @@ function filterFunction(list, filters) {
   // TODO: MODULE_FILTERS
   // 1. Handle the 3 cases detailed in the comments above and return the filtered list of adventures
   // 2. Depending on which filters are needed, invoke the filterByDuration() and/or filterByCategory() methods
-
-
+  let adventures=[];
+  if(filters.category.length==0 && filters.duration==""){
+    return list;
+  }
+    if(filters["category"].length!==0){
+      adventures = filterByCategory(list, filters.category);
+      console.log(`category selected ${adventures}`);
+    }
+    if(filters["duration"]!==""){
+      let range = filters.duration.split("-");
+      if(filters["category"].length!==0){
+        adventures =filterByDuration(adventures,range[0], range[1]);
+      }
+      else{
+        adventures = filterByDuration(list, range[0], range[1]);
+      }
+    }
   // Place holder for functionality to work in the Stubs
-  return list;
+  return adventures;
 }
 
 //Implementation of localStorage API to save filters to local storage. This should get called everytime an onChange() happens in either of filter dropdowns
 function saveFiltersToLocalStorage(filters) {
   // TODO: MODULE_FILTERS
   // 1. Store the filters as a String to localStorage
-
+  window.localStorage.setItem("filters", JSON.stringify(filters));
   return true;
 }
 
@@ -132,9 +163,9 @@ function getFiltersFromLocalStorage() {
   // TODO: MODULE_FILTERS
   // 1. Get the filters from localStorage and return String read as an object
 
-
+  return JSON.parse(window.localStorage.getItem("filters"));
   // Place holder for functionality to work in the Stubs
-  return null;
+  //return null;
 }
 
 //Implementation of DOM manipulation to add the following filters to DOM :
@@ -144,8 +175,22 @@ function getFiltersFromLocalStorage() {
 function generateFilterPillsAndUpdateDOM(filters) {
   // TODO: MODULE_FILTERS
   // 1. Use the filters given as input, update the Duration Filter value and Generate Category Pills
-
+  /* if(filters.category===) */
+  //need to do optional TODO
+  if(filters["category"].length!==0){
+    filters.category.forEach(selectedCategory => {
+      let pillDiv = document.createElement("div");
+      pillDiv.setAttribute("class", "category-filter");
+      let button = document.createElement("button");
+      pillDiv.innerText = selectedCategory;
+      let categoryList = document.getElementById("category-list");
+      categoryList.appendChild(pillDiv);
+      let durationFilter = document.getElementById("duration-select");
+      durationFilter.value = filters.duration;
+    })
+  }
 }
+
 
 
 export {
