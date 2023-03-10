@@ -42,7 +42,6 @@ function addAdventureDetailsToDOM(adventure) {
     })
     let adventureContent = document.getElementById("adventure-content");
     adventureContent.innerText = adventure.content;
-
   }
 
 }
@@ -64,13 +63,15 @@ function addBootstrapPhotoGallery(images) {
   carouselInner.setAttribute("class", "carousel-inner")
 
   images.forEach((image, index) => {
-    carouselIndicators.innerHTML+=`<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${index}" class="active" aria-current="true" aria-label="Slide ${index+1}"></button>`
+    
     if(index==0){
+      carouselIndicators.innerHTML+=`<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${index}" class="active" aria-current="true" aria-label="Slide ${index+1}"></button>`
       carouselInner.innerHTML+=`<div class="carousel-item active">
         <img src="${image}" class="activity-card-image">
       </div>`;
     }
     else{
+      carouselIndicators.innerHTML+=`<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="${index}" aria-current="true" aria-label="Slide ${index+1}"></button>`
       carouselInner.innerHTML += `<div class="carousel-item">
       <img src="${image}" class="activity-card-image">
     </div>`
@@ -94,6 +95,15 @@ photoGallery.append(carousel);
 function conditionalRenderingOfReservationPanel(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. If the adventure is already reserved, display the sold-out message.
+  if(adventure.available){
+    document.getElementById("reservation-panel-sold-out").style.display = "none";
+    document.getElementById("reservation-panel-available").style.display = "block";
+    document.getElementById("reservation-person-cost").textContent = adventure.costPerHead;
+  }
+  else{
+    document.getElementById("reservation-panel-sold-out").style.display = "block";
+    document.getElementById("reservation-panel-available").style.display = "none";
+  }
 
 }
 
@@ -101,13 +111,47 @@ function conditionalRenderingOfReservationPanel(adventure) {
 function calculateReservationCostAndUpdateDOM(adventure, persons) {
   // TODO: MODULE_RESERVATIONS
   // 1. Calculate the cost based on number of persons and update the reservation-cost field
-
+  let costValue = adventure.costPerHead * persons;
+  document.getElementById("reservation-cost").textContent = costValue;
 }
 
 //Implementation of reservation form submission
 function captureFormSubmit(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. Capture the query details and make a POST API call using fetch() to make the reservation
+  let form = document.getElementById("myForm");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = {
+      name: form.elements["name"].value,
+      date: form.elements["date"].value,
+      person: form.elements["person"].value,
+      adventure: adventure.id
+    }
+    console.log(data);
+    console.log(`date : ${data.date}`)
+    const dataToBePosted = {
+      method: 'POST',
+      headers: {
+      'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+      };
+    fetch(config.backendEndpoint+"/reservations/new", dataToBePosted)
+      .then(data => {
+          if (data.ok) {
+            alert("Success!");
+            location.reload();
+          }
+          else{
+            alert("Failed!")
+          }
+          return data.json();
+          }).then(update => {
+          console.log(update);
+          })
+      })
+  
   // 2. If the reservation is successful, show an alert with "Success!" and refresh the page. If the reservation fails, just show an alert with "Failed!".
 }
 
@@ -115,6 +159,12 @@ function captureFormSubmit(adventure) {
 function showBannerIfAlreadyReserved(adventure) {
   // TODO: MODULE_RESERVATIONS
   // 1. If user has already reserved this adventure, show the reserved-banner, else don't
+  if(adventure.reserved){
+    document.getElementById("reserved-banner").style.display="block";
+  }
+  else{
+    document.getElementById("reserved-banner").style.display="none";
+  }
 
 }
 
