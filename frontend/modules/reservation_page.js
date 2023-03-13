@@ -36,7 +36,7 @@ function addReservationToTable(reservations) {
       tr.innerHTML += `<td>${new Date(reservation.date).toLocaleDateString("en-IN")}</td`;
       tr.innerHTML += `<td>${reservation.price}</td>`;
       let dateTime = new Date(reservation.time);
-      let dateString = dateTime.getDate()+" "+dateTime.toLocaleString('default', { month: 'long' })+" "+dateTime.getFullYear()+", ";
+      let dateString = dateTime.getDate()+" "+dateTime.toLocaleString('en-IN', { month: 'long' })+" "+dateTime.getFullYear()+", ";
       let time = dateTime.toLocaleString().split(", ")[1].toLowerCase();
       dateString+=time;
       tr.innerHTML += `<td>${dateString}</td>`;
